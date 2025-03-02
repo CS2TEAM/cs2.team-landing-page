@@ -1,0 +1,95 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface User {
+  steamId: string;
+  displayName: string;
+  avatar: string;
+}
+
+const BACKEND_URL =
+  import.meta.env.VITE_NODE_ENV === "production"
+    ? import.meta.env.VITE_BACKEND_URL_PROD
+    : import.meta.env.VITE_BACKEND_URL;
+
+const useAuth = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("jwtToken"),
+  );
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const newToken = urlParams.get("token");
+
+    if (newToken) {
+      localStorage.setItem("jwtToken", newToken);
+      setToken(newToken);
+      setTimeout(() => {
+        navigate(window.location.pathname, { replace: true });
+      }, 500);
+    }
+  }, [navigate]);
+
+  const {
+    data: user,
+    isLoading: loading,
+    isError,
+  } = useQuery<User | null>({
+    queryKey: ["user", token],
+    queryFn: async () => {
+      if (!token) return null;
+
+      const res = await fetch(`${BACKEND_URL}/profile/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.status === 401) {
+        console.warn("⚠️ Token is invalid or expired.");
+        throw new Error("Unauthorized");
+      }
+
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+
+      return res.json();
+    },
+    enabled: !!token,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      window.location.href = `${BACKEND_URL}/auth/steam`;
+      return Promise.resolve();
+    },
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      localStorage.removeItem("jwtToken");
+      setToken(null);
+      queryClient.setQueryData(["user"], null);
+      navigate("/", { replace: true });
+      return Promise.resolve();
+    },
+    onMutate: () => {
+      queryClient.setQueryData(["user"], null);
+    },
+  });
+
+  return {
+    user,
+    login: loginMutation.mutate,
+    logout: logoutMutation.mutate,
+    loading,
+    isError,
+  };
+};
+
+export default useAuth;
