@@ -17,7 +17,7 @@ const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("jwtToken"),
+    localStorage.getItem("user"),
   );
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const useAuth = () => {
     const newToken = urlParams.get("token");
 
     if (newToken) {
-      localStorage.setItem("jwtToken", newToken);
+      localStorage.setItem("user", newToken);
       setToken(newToken);
       setTimeout(() => {
         navigate(window.location.pathname, { replace: true });
@@ -72,7 +72,7 @@ const useAuth = () => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("user");
       setToken(null);
       queryClient.setQueryData(["user"], null);
       navigate("/", { replace: true });
