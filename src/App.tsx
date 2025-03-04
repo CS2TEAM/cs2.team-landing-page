@@ -1,11 +1,19 @@
 import CS2TeamLogo from "./components/CS2TeamLogo";
 import SignIn from "./components/SignIn";
+import Socials, { Social } from "./components/Socials";
 import Spinner from "./components/Spinner";
 import UserProfile from "./components/UserProfile";
 import useAuth from "./hooks/useAuth";
 
 const App: React.FC = () => {
   const { user, login, logout, loading } = useAuth();
+
+  const socials: Social[] = [
+    { platform: "x", username: "CS2TEAM" },
+    { platform: "discord", username: "XfZHVfPr9C" },
+    { platform: "instagram", username: "CS2TEAM" },
+    { platform: "linkedin", username: "CS2TEAM" },
+  ];
 
   return (
     <div className="flex flex-col items-center bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600">
@@ -20,8 +28,11 @@ const App: React.FC = () => {
         ) : user ? (
           <UserProfile user={user} logout={logout} />
         ) : (
-          <SignIn login={login} />
+          <>
+            <SignIn login={login} />
+          </>
         )}
+        <Socials socials={socials} />
       </section>
     </div>
   );
