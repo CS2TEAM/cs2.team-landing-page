@@ -11,7 +11,7 @@ interface User {
 const BACKEND_URL =
   import.meta.env.VITE_NODE_ENV === "production"
     ? import.meta.env.VITE_BACKEND_URL_PROD
-    : import.meta.env.VITE_BACKEND_URL;
+    : import.meta.env.VITE_BACKEND_URL_DEV;
 
 const useAuth = () => {
   const navigate = useNavigate();
