@@ -1,36 +1,32 @@
-import { FaSignOutAlt } from "react-icons/fa";
-import Button from "./Button";
-
 interface UserProfileProps {
   user: {
+    steamId: string;
     displayName: string;
     avatar: string;
   };
-  logout: () => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ user, logout }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   return (
-    <div className="flex flex-col gap-5 rounded-2xl bg-slate-800 p-6 shadow-lg">
-      <h2 className="text-center text-lg font-semibold text-white">
-        Thanks for joining <span className="text-[#FF8100]">CS2.TEAM</span>
-      </h2>
-
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col items-center">
-        <img
-          src={user.avatar}
-          alt={`${user.displayName}'s Avatar`}
-          width={80}
-          height={80}
-          className="rounded-full border-2 border-blue-400"
-        />
-        <p className="mt-2 text-center text-lg font-semibold text-white">
-          {user.displayName}
-        </p>
-      </div>
-
-      <div className="flex justify-end">
-        <Button onClick={logout} icon={<FaSignOutAlt />} />
+        <a
+          href={`https://steamcommunity.com/profiles/${user.steamId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex flex-col items-center"
+        >
+          <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-blue-400">
+            <img
+              src={user.avatar}
+              alt={`${user.displayName}'s Avatar`}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+          </div>
+          <p className="mt-1 text-center text-lg font-semibold text-slate-100 transition-all duration-300 group-hover:underline">
+            {user.displayName}
+          </p>
+        </a>
       </div>
     </div>
   );

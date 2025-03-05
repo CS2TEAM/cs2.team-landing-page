@@ -40,7 +40,7 @@ const Socials: React.FC<{ socials: Social[] }> = ({ socials }) => {
             href={`${url}${username}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-2xl text-gray-300 transition hover:text-[#FF8100]"
+            className="text-2xl text-slate-300 transition hover:text-[#FF8100]"
           >
             {icon}
           </a>
