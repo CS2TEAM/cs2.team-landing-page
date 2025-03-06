@@ -1,12 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-  steamId: string;
-  displayName: string;
-  avatar: string;
-}
+import { User } from "../types";
 
 const BACKEND_URL =
   import.meta.env.VITE_NODE_ENV === "production"
