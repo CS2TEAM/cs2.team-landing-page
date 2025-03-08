@@ -1,4 +1,13 @@
+import { useRef } from "react";
+import {
+  FaChevronDown,
+  FaComments,
+  FaSearch,
+  FaTrophy,
+  FaUsers,
+} from "react-icons/fa";
 import CS2TeamLogo from "../components/CS2TeamLogo";
+import FeatureCard from "../components/FeatureCard";
 import SignIn from "../components/SignIn";
 import Socials, { Social } from "../components/Socials";
 import Spinner from "../components/Spinner";
@@ -19,22 +28,70 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
     { platform: "linkedin", username: "CS2TEAM" },
   ];
 
+  const featureRef = useRef<HTMLDivElement>(null);
+
+  const scrollToFeatures = () => {
+    if (featureRef.current) {
+      featureRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section className="flex h-screen w-full flex-col items-center justify-center gap-6 px-6 text-center sm:px-10">
-      <CS2TeamLogo className="h-20 sm:h-24" />
-      <p className="max-w-xl text-base text-slate-300 sm:text-lg">
-        Esports team finding platform and social network for Counter-Strike 2,
-        enabling aspiring players to find teams or create their own.
-      </p>
-      {loading ? (
-        <Spinner />
-      ) : user ? (
-        <UserProfile user={user} />
-      ) : (
-        <SignIn login={login} />
-      )}
-      <Socials socials={socials} />
-    </section>
+    <main className="flex w-full flex-col items-center">
+      <section className="flex h-screen w-full flex-col items-center justify-center gap-6 px-6 text-center sm:px-10">
+        <CS2TeamLogo className="h-20 sm:h-24" />
+        <p className="max-w-xl text-base text-slate-300 sm:text-lg">
+          Esports team-finding platform and social network for Counter-Strike 2,
+          enabling aspiring players to find teams or create their own.
+        </p>
+        {loading ? (
+          <Spinner />
+        ) : user ? (
+          <UserProfile user={user} />
+        ) : (
+          <SignIn login={login} />
+        )}
+        <Socials socials={socials} />
+
+        <button
+          onClick={scrollToFeatures}
+          className="absolute bottom-12 flex animate-bounce cursor-pointer flex-col items-center text-slate-300"
+        >
+          <FaChevronDown className="text-2xl" />
+        </button>
+      </section>
+
+      <section
+        ref={featureRef}
+        className="w-full max-w-4xl px-6 py-16 text-center sm:px-10"
+      >
+        <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+          Why Join CS2.TEAM?
+        </h2>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          <FeatureCard
+            icon={<FaUsers />}
+            title="Find Your Team"
+            description="Connect with players of similar skill levels and join teams suited to your playstyle."
+          />
+          <FeatureCard
+            icon={<FaSearch />}
+            title="Advanced Player Search"
+            description="Filter players by rank, region, and roles to find the perfect teammates."
+          />
+          <FeatureCard
+            icon={<FaTrophy />}
+            title="Compete & Rank Up"
+            description="Participate in ranked matches and tournaments to improve your game."
+          />
+          <FeatureCard
+            icon={<FaComments />}
+            title="Community & Networking"
+            description="Engage in discussions, share strategies, and grow your esports connections."
+          />
+        </div>
+      </section>
+    </main>
   );
 };
 
