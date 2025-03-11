@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import CountUp from "react-countup";
 import {
   FaChevronDown,
   FaComments,
@@ -11,6 +12,7 @@ import FeatureCard from "../components/FeatureCard";
 import SignIn from "../components/SignIn";
 import Socials, { Social } from "../components/Socials";
 import Spinner from "../components/Spinner";
+import { useUserCount } from "../hooks/useUserCount";
 import { User } from "../types";
 
 interface HomeProps {
@@ -35,6 +37,10 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
     }
   };
 
+  const { data: userCount, isLoading: userCountLoading } = useUserCount();
+
+  const isLoading = loading || userCountLoading;
+
   if (user) {
     return null;
   }
@@ -43,11 +49,26 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
     <div className="flex w-full flex-col items-center">
       <section className="flex h-screen w-full flex-col items-center justify-center gap-6 px-6 text-center sm:px-10">
         <CS2TeamLogo className="h-20 sm:h-24" />
-        <p className="max-w-xl text-base text-slate-300 sm:text-lg">
+        <p className="max-w-xl font-[Stratum2] text-base text-slate-300 sm:text-lg">
           Esports team-finding platform and social network for Counter-Strike 2,
           enabling aspiring players to find teams or create their own.
         </p>
-        {loading ? <Spinner /> : <SignIn login={login} />}
+
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <div className="flex flex-col gap-2 font-medium text-white">
+            <SignIn login={login} />
+            <p className="font-[Stratum2]">
+              Join{" "}
+              <span className="text-[#FF8100]">
+                <CountUp end={userCount ?? 0} duration={2} separator="," />
+              </span>{" "}
+              other players
+            </p>
+          </div>
+        )}
+
         <Socials socials={socials} />
 
         <button
@@ -62,7 +83,7 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
         ref={featureRef}
         className="w-full max-w-4xl px-6 py-16 text-center sm:px-10"
       >
-        <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+        <h2 className="font-[Stratum2] text-2xl font-semibold text-white sm:text-3xl">
           Why Join CS2.TEAM?
         </h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
