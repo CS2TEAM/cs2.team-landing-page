@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaSignOutAlt, FaSteam, FaUserEdit } from "react-icons/fa";
+import { FaSteam, FaUserEdit } from "react-icons/fa";
 import "../assets/styles/countryFlag.css";
 import Button from "../components/Button";
 import EditProfile from "../components/EditProfile";
@@ -8,10 +8,9 @@ import { getCountryFlag } from "../utils/getCountryFlag";
 
 interface UserProfileProps {
   user: User;
-  logout: () => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ user, logout }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [displayName, setDisplayName] = useState(user.displayName);
   const [region, setRegion] = useState(user.countryCode);
@@ -75,7 +74,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, logout }) => {
             iconPosition="right"
             onClick={handleEditClick}
           />
-          <Button onClick={logout} icon={<FaSignOutAlt />} alt="Log out" />
         </div>
       </div>
 
