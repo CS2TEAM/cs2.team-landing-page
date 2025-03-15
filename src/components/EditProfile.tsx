@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { MdClose } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
+import { MdClose } from "react-icons/md";
 import ReferralDropdown from "../components/ReferralDropdown";
 import { countryMap } from "../utils/getCountryFlag";
 import Button from "./common/Button";
+import Select from "./common/Select";
 import TextArea from "./common/TextArea";
 import TextInput from "./common/TextInput";
 
@@ -51,18 +52,20 @@ const EditProfile: React.FC<EditProfileProps> = ({
           />
         </div>
 
-        <label className="mb-1 block text-sm text-white">Region</label>
-        <select
-          className="mb-3 w-full rounded border border-slate-600 bg-slate-800 p-2 text-slate-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
-        >
-          {Object.entries(countryMap).map(([code, { countryName }]) => (
-            <option key={code} value={code}>
-              {countryName}
-            </option>
-          ))}
-        </select>
+        <div className="mb-3">
+          <Select
+            label="Region"
+            value={region}
+            onChange={setRegion}
+            options={Object.entries(countryMap).map(
+              ([code, { countryName }]) => ({
+                value: code,
+                label: countryName,
+              }),
+            )}
+          />
+        </div>
+
         <div className="mb-3">
           <TextArea
             label="Bio"

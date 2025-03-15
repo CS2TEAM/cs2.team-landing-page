@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Select from "./common/Select";
+import TextInput from "./common/TextInput";
 
 interface ReferralDropdownProps {
   initialReferral: string;
@@ -13,14 +15,14 @@ const ReferralDropdown: React.FC<ReferralDropdownProps> = ({
   const [customReferral, setCustomReferral] = useState("");
 
   const referralOptions = [
-    "Friend",
-    "Reddit",
-    "X",
-    "Discord",
-    "Instagram",
-    "YouTube",
-    "Internet Search",
-    "Other",
+    { value: "Friend", label: "Friend" },
+    { value: "Reddit", label: "Reddit" },
+    { value: "X", label: "X" },
+    { value: "Discord", label: "Discord" },
+    { value: "Instagram", label: "Instagram" },
+    { value: "YouTube", label: "YouTube" },
+    { value: "Internet Search", label: "Internet Search" },
+    { value: "Other", label: "Other" },
   ];
 
   const handleChange = (value: string) => {
@@ -30,32 +32,21 @@ const ReferralDropdown: React.FC<ReferralDropdownProps> = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-slate-300">How did you find CS2.TEAM?</label>
-      <select
+      <Select
+        label="How did you find CS2.TEAM?"
         value={selectedReferral}
-        onChange={(e) => handleChange(e.target.value)}
-        className="rounded border border-slate-600 bg-slate-800 p-2 text-slate-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-      >
-        <option value="" disabled>
-          Select an option
-        </option>
-        {referralOptions.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+        onChange={handleChange}
+        options={referralOptions}
+      />
 
       {selectedReferral === "Other" && (
-        <input
-          type="text"
+        <TextInput
           placeholder="How did you find CS2.TEAM?"
           value={customReferral}
-          onChange={(e) => {
-            setCustomReferral(e.target.value);
-            onChange(e.target.value.trim());
+          onChange={(value) => {
+            setCustomReferral(value);
+            onChange(value.trim());
           }}
-          className="rounded border border-slate-600 bg-slate-800 p-2 text-slate-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
         />
       )}
     </div>
