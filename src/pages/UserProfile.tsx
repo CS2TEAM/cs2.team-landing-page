@@ -41,6 +41,12 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
     setIsEditing(false);
   };
 
+  const formattedJoinDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(user.createdAt));
+
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-5">
       <div className="flex flex-col items-center gap-2">
@@ -51,23 +57,30 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
             className="h-full w-full cursor-pointer object-cover transition-transform duration-300 hover:scale-110"
           />
         </div>
-        <div className="flex items-center gap-2">
-          <a
-            href={`https://steamcommunity.com/profiles/${user.steamId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2"
-          >
-            <p className="text-center text-lg font-semibold text-slate-300 transition-all duration-300 group-hover:text-slate-100 group-hover:underline">
-              {displayName}
-            </p>
-            <FaSteam
-              size={20}
-              className="text-slate-300 transition-colors duration-300 group-hover:text-slate-100"
-            />
-          </a>
-          {countryFlag && <span className={`countryFlag ${countryFlag}`} />}
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <a
+              href={`https://steamcommunity.com/profiles/${user.steamId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2"
+            >
+              <p className="text-center text-lg font-semibold text-slate-300 transition-all duration-300 group-hover:text-slate-100 group-hover:underline">
+                {displayName}
+              </p>
+              <FaSteam
+                size={20}
+                className="text-slate-300 transition-colors duration-300 group-hover:text-slate-100"
+              />
+            </a>
+            {countryFlag && <span className={`countryFlag ${countryFlag}`} />}
+          </div>
+
+          <p className="text-sm text-slate-400">
+            Member since {formattedJoinDate}
+          </p>
         </div>
+
         <div className="flex gap-2">
           <Button
             text="Edit player profile"

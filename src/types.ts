@@ -4,4 +4,5 @@ export interface User {
   avatar: string;
   countryCode: string;
   referralSource: string;
+  createdAt: string;
 }
