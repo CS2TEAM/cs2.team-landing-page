@@ -6,15 +6,14 @@ import EditProfile from "../components/EditProfile";
 import { User } from "../types";
 import { getCountryFlag } from "../utils/getCountryFlag";
 
-interface UserProfileProps {
-  user: User;
-}
-
-const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+const UserProfile: React.FC<{ user: User }> = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [displayName, setDisplayName] = useState(user.displayName);
   const [region, setRegion] = useState(user.countryCode);
   const [bio, setBio] = useState("");
+  const [referralSource, setReferralSource] = useState(
+    user.referralSource || "",
+  );
   const { countryFlag } = getCountryFlag(region);
 
   useEffect(() => {
@@ -33,10 +32,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
     newDisplayName: string,
     newRegion: string,
     newBio: string,
+    newReferral: string,
   ) => {
     setDisplayName(newDisplayName);
     setRegion(newRegion);
     setBio(newBio);
+    setReferralSource(newReferral);
     setIsEditing(false);
   };
 
@@ -71,7 +72,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
           <Button
             text="Edit player profile"
             icon={<FaUserEdit />}
-            iconPosition="right"
             onClick={handleEditClick}
           />
         </div>
@@ -82,6 +82,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
           initialDisplayName={displayName}
           initialRegion={region}
           initialBio={bio}
+          initialReferral={referralSource}
           onSave={handleSaveProfile}
           onCancel={() => setIsEditing(false)}
         />
