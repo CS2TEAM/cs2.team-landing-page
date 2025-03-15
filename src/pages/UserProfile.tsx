@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSteam, FaUserEdit } from "react-icons/fa";
 import "../assets/styles/countryFlag.css";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import EditProfile from "../components/EditProfile";
 import { User } from "../types";
 import { getCountryFlag } from "../utils/getCountryFlag";

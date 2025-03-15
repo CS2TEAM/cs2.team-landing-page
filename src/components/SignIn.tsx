@@ -1,5 +1,5 @@
 import { FaSteam } from "react-icons/fa";
-import Button from "./Button";
+import Button from "./common/Button";
 
 interface SignInProps {
   login: () => void;
