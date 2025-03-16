@@ -3,22 +3,24 @@ import { FaSteam, FaUserEdit } from "react-icons/fa";
 import "../assets/styles/countryFlag.css";
 import Button from "../components/common/Button";
 import EditProfile from "../components/EditProfile";
-import { User } from "../types";
+import useAuth from "../hooks/useAuth";
 import { getCountryFlag } from "../utils/getCountryFlag";
 
-const UserProfile: React.FC<{ user: User }> = ({ user }) => {
+const UserProfile = () => {
+  const { user, loading } = useAuth();
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <p>User not found.</p>;
+
   const [isEditing, setIsEditing] = useState(false);
   const [displayName, setDisplayName] = useState(user.displayName);
   const [region, setRegion] = useState(user.countryCode);
-  const [bio, setBio] = useState("");
-  const [referralSource, setReferralSource] = useState(
-    user.referralSource || "",
-  );
+  const [bio, setBio] = useState(user.bio ?? "");
+  const [referralSource, setReferralSource] = useState(user.referral ?? "");
+
   const { countryFlag } = getCountryFlag(region);
 
   useEffect(() => {
     document.title = `${displayName} | CS2.TEAM`;
-
     return () => {
       document.title = "CS2.TEAM - Esports Team Finder";
     };
@@ -31,13 +33,13 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
   const handleSaveProfile = (
     newDisplayName: string,
     newRegion: string,
-    newBio: string,
-    newReferral: string,
+    newBio?: string,
+    newReferral?: string,
   ) => {
     setDisplayName(newDisplayName);
     setRegion(newRegion);
-    setBio(newBio);
-    setReferralSource(newReferral);
+    setBio(newBio ?? "");
+    setReferralSource(newReferral ?? "");
     setIsEditing(false);
   };
 

@@ -5,4 +5,6 @@ export interface User {
   countryCode: string;
   referralSource: string;
   createdAt: string;
+  bio?: string,
+  referral?: string,
 }

@@ -12,7 +12,7 @@ const useAuth = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("user"),
+    localStorage.getItem("authToken"),
   );
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const useAuth = () => {
     const newToken = urlParams.get("token");
 
     if (newToken) {
-      localStorage.setItem("user", newToken);
+      localStorage.setItem("authToken", newToken);
       setToken(newToken);
       setTimeout(() => {
         navigate(window.location.pathname, { replace: true });
@@ -51,7 +51,8 @@ const useAuth = () => {
 
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-      return res.json();
+      const data = await res.json();
+      return data.user;
     },
     enabled: !!token,
     staleTime: 1000 * 60 * 5,
@@ -67,14 +68,11 @@ const useAuth = () => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      localStorage.removeItem("user");
+      localStorage.removeItem("authToken");
       setToken(null);
       queryClient.setQueryData(["user"], null);
       navigate("/", { replace: true });
       return Promise.resolve();
-    },
-    onMutate: () => {
-      queryClient.setQueryData(["user"], null);
     },
   });
 

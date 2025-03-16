@@ -17,7 +17,7 @@ const App: React.FC = () => {
   return (
     <main className="flex flex-col items-center">
       {user ? (
-        <UserProfile user={user} />
+        <UserProfile />
       ) : (
         <Home user={null} login={login} loading={loading} />
       )}
