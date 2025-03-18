@@ -3,6 +3,7 @@ import CountUp from "react-countup";
 import {
   FaChevronDown,
   FaComments,
+  FaInfoCircle,
   FaSearch,
   FaTrophy,
   FaUsers,
@@ -58,14 +59,28 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
           <Spinner />
         ) : (
           <div className="flex flex-col gap-2 font-medium text-white">
-            <SignIn login={login} />
-            <p className="font-[Stratum2]">
-              Join{" "}
-              <span className="text-[#FF8100]">
-                <CountUp end={userCount ?? 0} duration={2} separator="," />
-              </span>{" "}
-              other players
-            </p>
+            {userCount === undefined || userCount === null ? (
+              <div className="flex items-start gap-2 text-red-400">
+                <FaInfoCircle className="mt-1 text-lg" />
+                <div>
+                  <p>Unable to connect to CS2.TEAM services.</p>
+                  <p>Please try again later.</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <SignIn login={login} />
+                {userCount > 0 && (
+                  <p className="font-[Stratum2]">
+                    Join{" "}
+                    <span className="text-[#FF8100]">
+                      <CountUp end={userCount} duration={2} separator="," />
+                    </span>{" "}
+                    other players
+                  </p>
+                )}
+              </>
+            )}
           </div>
         )}
 

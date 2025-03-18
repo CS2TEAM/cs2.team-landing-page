@@ -61,6 +61,10 @@ const useAuth = () => {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
+      if (!BACKEND_URL) {
+        return;
+      }
+
       window.location.href = `${BACKEND_URL}/auth/steam`;
       return Promise.resolve();
     },
