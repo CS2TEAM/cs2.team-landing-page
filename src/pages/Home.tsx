@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CountUp from "react-countup";
 import {
   FaChevronDown,
@@ -8,8 +8,10 @@ import {
   FaTrophy,
   FaUsers,
 } from "react-icons/fa";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import CS2TeamLogo from "../components/CS2TeamLogo";
 import FeatureCard from "../components/FeatureCard";
+import InfoModal from "../components/InfoModal";
 import SignIn from "../components/SignIn";
 import Socials, { Social } from "../components/Socials";
 import Spinner from "../components/Spinner";
@@ -23,6 +25,8 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
   const socials: Social[] = [
     { platform: "x", username: "CS2TEAM" },
     { platform: "discord", username: "XfZHVfPr9C" },
@@ -69,7 +73,21 @@ const Home: React.FC<HomeProps> = ({ user, login, loading }) => {
               </div>
             ) : (
               <>
-                <SignIn login={login} />
+                <div className="relative flex items-center justify-center gap-2">
+                  <SignIn login={login} />
+                  <button
+                    className="absolute right-[-32px] cursor-pointer text-2xl text-slate-400 transition hover:text-slate-300"
+                    onClick={() => setShowInfoModal(true)}
+                    aria-label="More info about Steam sign-in"
+                  >
+                    <IoMdInformationCircleOutline />
+                  </button>
+                </div>
+                <InfoModal
+                  isOpen={showInfoModal}
+                  onClose={() => setShowInfoModal(false)}
+                />
+
                 {userCount > 0 && (
                   <p className="font-[Stratum2]">
                     Join{" "}
